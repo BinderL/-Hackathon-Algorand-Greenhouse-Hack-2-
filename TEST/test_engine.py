@@ -50,7 +50,7 @@ def test_nnbOnDataset():
 @pytest.mark.similarity
 def test_similarity():
     _begin = time()
-    _rand = int(random.random()*10+1)
+    _rand = int(random.random()*100 + 1)
     dataToClass = db_read("available", _rand)[0]
     data = classify("sold", dataToClass)
     print("this NFT"),
@@ -61,6 +61,23 @@ def test_similarity():
 
 @pytest.mark.similarity
 def test_weightedStrategies():
-    return
+    print("weight strategies 1: plunder")
+    _rand = int(random.random()*100+1)
+    dataToClass = db_read("available", _rand)[0]
+    data = classify("available", dataToClass, [1 for i in range(0, dataToClass.__len__()-6)]+[1,1,1,10])
+    _helper(dataToClass, data)
+    print("weight strategies 1: beauty as I am")
+    _rand = int(random.random()*100+1)
+    dataToClass = db_read("available", _rand)[0]
+    data = classify("available", dataToClass, [10 for i in range(0, dataToClass.__len__()-6)]+[1,1,1,1])
+    _helper(dataToClass, data)
 
+
+
+
+def _helper(_dataToClass, _data):
+    print("this NFT"),
+    log_json(header_add("available", _dataToClass))
+    print(" is similar to")
+    log_json(header_add("sold", _data[2]))
 

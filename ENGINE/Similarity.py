@@ -15,7 +15,9 @@ def init_db(_path_db = PATH_DB):
     DB = sqlite3.connect(_path_db)
     return DB.cursor()
 
-def classify(_name, _data):
+_w = [1 for i in range(0, testing_Y().__len__())]
+
+def classify(_name, _data, _weight=_w):
     _time_begin = time()
     cur = init_db("DB/pirate.db")
     _X = db_readAll(cur, _name)
@@ -24,6 +26,8 @@ def classify(_name, _data):
     _Y_harmo = indexWithBag([_Y], _bag)
     _X = clean_stuff(_X)
     _X_harmo = indexWithBag(_X, _bag)
+    _X_harmo = weight_datas(_X_harmo, _weight)
+    _Y_harmo= weight_datas(_Y_harmo, _weight)
     _dist, _ind = get_nearestNeighbors(_Y_harmo, _X_harmo)
     _time_end = - _time_begin + time()
     print("time: " + str(_time_end))
@@ -70,4 +74,11 @@ def indexWithBag(_data, _bag):
     _ncol_words = _bag.__len__()
     _data_indexed = list(map(lambda x: list(map(lambda y: _bag[x.index(y)].index(y) * 100 / _bag[x.index(y)].__len__() if x.index(y) < _ncol_words else y * _ncol_words / 4, x[0:26])) ,_data))
     return _data_indexed
+
+def weight_datas(_datas, _weight):
+    return [_weight_data(i, _weight) for i in _datas]
+
+
+def _weight_data(_data_indexed, _weight):
+    return list(map(lambda x,y: x*y, _data_indexed, _weight))
 

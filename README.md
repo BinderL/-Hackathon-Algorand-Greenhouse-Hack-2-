@@ -5,7 +5,7 @@ This tools aims at building a data set training pipeline to fix regarding public
 
 Install: 
 python -m venv venv
-pip install requirements.txt 
+pip install -r requirements.txt 
 
 Run build 
 python main.py
